@@ -1,48 +1,63 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <Windows.h>
+#include <time.h>
+#include <stdlib.h>
 
-int GeneralWageCalculation(int hour, int hourlyPay) {
+typedef void (*PFunc)(int*);
 
-	if (hour <= 0) {
-		return 0;
+void CheckTheAnswer(int* num) {
+	int result;
+	result = rand() + 1;
+
+	printf(" 出目：%d\n", result);
+
+	if (result % 2 == 0 && *num % 2 == 0 ||
+		result % 2 == 1 && *num % 2 == 1) {
+		printf("正解\n");
 	}
-
-	return hour * hourlyPay;
+	else {
+		printf("不正解\n");
+	}
 }
 
-int RecursiveWage(int hour, int oldHour , int wage, int hourlyPay) {
-	
-	if (hour >= oldHour) {
-		return wage;
-	}
+void HalfABlock(int second) {
 
-	return RecursiveWage(hour+1, oldHour,wage * 2 - 50, hourlyPay);
+	PFunc p;
+
+	int playerNum;
+	p = ScanNum;
+	p(&playerNum);
+
+	Sleep(second);
+
+	p = CheckTheAnswer;
+	p(&playerNum);
+}
+
+void ScanNum(int* num) {
+
+	printf("値を入力してください\n");
+
+	scanf_s("%d", num);
+	if (*num % 2 == 0) {
+		printf("偶数が入力されました\n");
+		*num = 2;
+	}
+	else if (*num % 2 == 1) {
+		printf("奇数が入力されました\n");
+		*num = 1;
+	}
+	else {
+		printf("error\n");
+	}
 }
 
 int main() {
 
-	const int hourlyPay = 1072;
-	const int recursivePay = 100;
-	int oldHour = 0;
-	int hour = 0;
+	srand(time(nullptr));
 
-	while (true)
-	{
-		
-		int nowHourlyPay = GeneralWageCalculation(oldHour, hourlyPay);
-		int nowRecursivePay = RecursiveWage(hour,oldHour, recursivePay, nowHourlyPay);
+	int standby = 1000;	//待機時間
+	HalfABlock(standby);
 
-		printf("一般的:%d　時間%d  ", nowHourlyPay, oldHour);
-		printf("再帰的:%d  時間%d\n", nowRecursivePay,oldHour);
-
-		if (nowHourlyPay < nowRecursivePay && oldHour > 0) {	//0時間の時点ではbreakしない
-
-			printf("%d時間の時点で再帰的な賃金が一般的な賃金を超える\n",oldHour);
-			break;
-		}
-
-		oldHour++;
-		
-	}
-	
 	return 0;
 }
