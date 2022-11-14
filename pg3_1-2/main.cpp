@@ -1,4 +1,3 @@
-#include <functional>
 #include <stdio.h>
 #include <Windows.h>
 #include <time.h>
@@ -13,10 +12,10 @@ enum OddEven
 	Even,
 };
 
-void DispWaitTime(PFunc p,int sec, int *num) {
+void DispWaitTime(PFunc p, int sec, int* num) {
 
 	p(num);
-	
+
 	printf("Œ‹‰Ê‚Ü‚Å%d•b!\n", sec);
 	Sleep(sec * 1000);
 
@@ -55,27 +54,24 @@ void ScanNum(int* num) {
 
 void HalfABlock() {
 
-	
+	PFunc p;
 
 	int playerNum = 0;
 	int sec = 3;
 
-	std::function<void(PFunc, int, int)>fx = [](PFunc p, int sec, int num) {
+	p = ScanNum;
 
-		DispWaitTime(p, sec, &num);
+	DispWaitTime(p, sec, &playerNum);
 
-		CheckTheAnswer(&num);
-	};
+	CheckTheAnswer(&playerNum);
 
-	fx(ScanNum, sec, playerNum);
-	
 }
 
 int main() {
 
 	srand(time(nullptr));
 
-		
+
 	HalfABlock();
 
 
