@@ -1,3 +1,4 @@
+#include <functional>
 #include <stdio.h>
 #include <Windows.h>
 #include <time.h>
@@ -54,16 +55,19 @@ void ScanNum(int* num) {
 
 void HalfABlock() {
 
-	PFunc p;
+	
 
 	int playerNum = 0;
 	int sec = 3;
 
-	p = ScanNum;
+	std::function<void(PFunc, int, int)>fx = [](PFunc p, int sec, int num) {
 
-	DispWaitTime(p,sec,&playerNum);
-	
-	CheckTheAnswer(&playerNum);
+		DispWaitTime(p, sec, &num);
+
+		CheckTheAnswer(&num);
+	};
+
+	fx(ScanNum, sec, playerNum);
 	
 }
 
