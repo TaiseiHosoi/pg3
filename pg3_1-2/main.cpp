@@ -5,23 +5,6 @@
 
 typedef void (*PFunc)(int*);
 
-void CheckTheAnswer(int* num) {
-	int result;
-	result = rand() % 2 + 1;
-
-	printf("出目：%d\n", result);
-
-	if (result % 2 == 0 && *num % 2 == 0 ||
-		result % 2 == 1 && *num % 2 == 1) {
-		printf("正解!\n");
-	}
-	else {
-		printf("不正解\n");
-	}
-}
-
-
-
 enum OddEven
 {
 	Zero,
@@ -29,18 +12,38 @@ enum OddEven
 	Even,
 };
 
+void DispWaitTime(PFunc p,int sec, int *num) {
+
+	p(num);
+	
+	printf("結果まで%d秒!\n", sec);
+	Sleep(sec * 1000);
+
+}
+
+void CheckTheAnswer(int* num) {
+
+	int result = rand() % 2 + 1;
+
+	if (result == 0 && *num == 0 ||
+		result == 1 && *num == 1) {
+		printf("正解!\n");
+	}
+	else {
+		printf("不正解\n");
+	}
+}
+
 void ScanNum(int* num) {
 
-	printf("値を入力してください\n");
+	printf("値を入力してください。\n");
 
 	scanf_s("%d", num);
 
 	if (*num % 2 == 0) {
-		printf("偶数が入力されました\n");
 		*num = Even;
 	}
 	else if (*num % 2 == 1) {
-		printf("奇数が入力されました\n");
 		*num = Odd;
 	}
 	else {
@@ -48,26 +51,29 @@ void ScanNum(int* num) {
 	}
 }
 
-void HalfABlock(int second) {
+
+void HalfABlock() {
 
 	PFunc p;
 
-	int playerNum;
+	int playerNum = 0;
+	int sec = 3;
+
 	p = ScanNum;
-	p(&playerNum);
 
-	Sleep(second);
-
-	p = CheckTheAnswer;
-	p(&playerNum);
+	DispWaitTime(p,sec,&playerNum);
+	
+	CheckTheAnswer(&playerNum);
+	
 }
 
 int main() {
 
 	srand(time(nullptr));
 
-	int standby = 1000;	//待機時間
-	HalfABlock(standby);
+		
+	HalfABlock();
+
 
 	return 0;
 }
