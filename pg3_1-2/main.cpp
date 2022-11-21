@@ -53,30 +53,24 @@ void ScanNum(int* num) {
 }
 
 
-void HalfABlock() {
 
-	
-
-	int playerNum = 0;
-	int sec = 3;
-
-	std::function<void(PFunc, int, int)>fx = [](PFunc p, int sec, int num) {
-
-		DispWaitTime(p, sec, &num);
-
-		CheckTheAnswer(&num);
-	};
-
-	fx(ScanNum, sec, playerNum);
-	
-}
 
 int main() {
 
 	srand(time(nullptr));
 
 		
-	HalfABlock();
+	int playerNum = 0;
+	int sec = 3;
+
+	std::function<void(PFunc, int, int)> SetTimeOut = [](PFunc p, int sec, int num) {
+
+		DispWaitTime(p, sec, &num);
+
+		CheckTheAnswer(&num);
+	};
+
+	SetTimeOut(ScanNum, sec, playerNum);
 
 
 	return 0;
