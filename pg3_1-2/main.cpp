@@ -13,27 +13,6 @@ enum OddEven
 	Even,
 };
 
-void DispWaitTime(PFunc p, int sec, int* num) {
-
-	p(num);
-
-	printf("Œ‹‰Ê‚Ü‚Å%d•b!\n", sec);
-	Sleep(sec * 1000);
-
-}
-
-void CheckTheAnswer(int* num) {
-
-	int result = rand() % 2 + 1;
-
-	if (result == 0 && *num == 0 ||
-		result == 1 && *num == 1) {
-		printf("³‰ğ!\n");
-	}
-	else {
-		printf("•s³‰ğ\n");
-	}
-}
 
 void ScanNum(int* num) {
 
@@ -51,7 +30,6 @@ void ScanNum(int* num) {
 		printf("error\n");
 	}
 }
-
 
 
 
