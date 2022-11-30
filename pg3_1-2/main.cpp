@@ -13,10 +13,10 @@ enum OddEven
 	Even,
 };
 
-void DispWaitTime(PFunc p,int sec, int *num) {
+void DispWaitTime(PFunc p, int sec, int* num) {
 
 	p(num);
-	
+
 	printf("åãâ Ç‹Ç≈%dïb!\n", sec);
 	Sleep(sec * 1000);
 
@@ -53,31 +53,39 @@ void ScanNum(int* num) {
 }
 
 
-void HalfABlock() {
 
-	
-
-	int playerNum = 0;
-	int sec = 3;
-
-	std::function<void(PFunc, int, int)>fx = [](PFunc p, int sec, int num) {
-
-		DispWaitTime(p, sec, &num);
-
-		CheckTheAnswer(&num);
-	};
-
-	fx(ScanNum, sec, playerNum);
-	
-}
 
 int main() {
 
 	srand(time(nullptr));
 
-		
-	HalfABlock();
 
+	int playerNum = 0;
+	int sec = 3;
+
+	std::function<void(PFunc, int, int)> SetTimeOut = [](PFunc p, int sec, int num) {
+
+		p(&num);
+
+		printf("%dïbí‚é~\n", sec);
+		Sleep(sec * 1000);
+	};
+
+	SetTimeOut(ScanNum, sec, playerNum);
+
+	std::function<void(int)> CheckTheAnswer = [](int num) {
+		int result = rand() % 2 + 1;
+
+		if (result == 0 && num == 0 ||
+			result == 1 && num == 1) {
+			printf("ê≥â!\n");
+		}
+		else {
+			printf("ïsê≥â\n");
+		}
+	};
+
+	CheckTheAnswer(playerNum);
 
 	return 0;
 }
