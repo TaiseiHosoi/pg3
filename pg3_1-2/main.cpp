@@ -1,69 +1,74 @@
-#include <functional>
 #include <stdio.h>
-#include <Windows.h>
-#include <time.h>
-#include <stdlib.h>
-
-typedef void (*PFunc)(int*);
-
-enum OddEven
-{
-	Zero,
-	Odd,
-	Even,
-};
-
-
-void ScanNum(int* num) {
-
-	printf("値を入力してください。\n");
-
-	scanf_s("%d", num);
-
-	if (*num % 2 == 0) {
-		*num = Even;
-	}
-	else if (*num % 2 == 1) {
-		*num = Odd;
-	}
-	else {
-		printf("error\n");
-	}
-}
+#include <list>
+#include <iostream>
 
 
 
 int main() {
 
-	srand(time(nullptr));
+    std::list<const char*> YamanoteLine;
+    YamanoteLine.push_back("Toukyou");
+    YamanoteLine.push_back("Yurakucho");
+    YamanoteLine.push_back("Shimbashi");
+    YamanoteLine.push_back("Hamamatsucho");
+    YamanoteLine.push_back("Tamachi");
+    YamanoteLine.push_back("Shinagawa");
+    YamanoteLine.push_back("Osaki");
+    YamanoteLine.push_back("Gotanda");
+    YamanoteLine.push_back("Meguro");
+    YamanoteLine.push_back("Ebisu");
+    YamanoteLine.push_back("Shibuya");
+    YamanoteLine.push_back("Harajuku");
+    YamanoteLine.push_back("Yoyogi");
+    YamanoteLine.push_back("Shinjuku");
+    YamanoteLine.push_back("Shin-Okubo");
+    YamanoteLine.push_back("Takadanobaba");
+    YamanoteLine.push_back("Mejiro");
+    YamanoteLine.push_back("Ikebukuro");
+    YamanoteLine.push_back("Otsuka");
+    YamanoteLine.push_back("Sugamo");
+    YamanoteLine.push_back("Komagome");
+    YamanoteLine.push_back("Tabata");
+    YamanoteLine.push_back("Nippori");
+    YamanoteLine.push_back("Uguisudani");
+    YamanoteLine.push_back("Ueno");
+    YamanoteLine.push_back("Okachimachi");
+    YamanoteLine.push_back("Akihabara");
+    YamanoteLine.push_back("Kanda");
 
+    std::list<const char*>::iterator itr;
+    for (itr = YamanoteLine.begin(); itr != YamanoteLine.end(); ++itr) {//初期段階
+        std::cout << *itr << "\n";
+    }
 
-	int playerNum = 0;
-	int sec = 3;
+    std::cout << "\n";
 
-	std::function<void(PFunc, int, int)> SetTimeOut = [](PFunc p, int sec, int num) {
+    //西日暮里を入れる
+    for (itr = YamanoteLine.begin(); itr != YamanoteLine.end(); ++itr) {
+        if (*itr == "Nippori") {
+            itr = YamanoteLine.insert(itr, "NishiniNippori");
+            break;
+        }
+    }
 
-		p(&num);
+    for (itr = YamanoteLine.begin(); itr != YamanoteLine.end(); ++itr) {
+        std::cout << *itr << "\n";
+    }
 
-		printf("%d秒停止\n", sec);
-		Sleep(sec * 1000);
-	};
+    //高輪ゲートウェイを入れる
+    for (itr = YamanoteLine.begin(); itr != YamanoteLine.end(); ++itr) {
+        if (*itr == "Shinagawa") {
+            itr = YamanoteLine.insert(itr, "TakanawaGateway");
+            break;
+        }
+    }
 
-	SetTimeOut(ScanNum, sec, playerNum);
+    for (itr = YamanoteLine.begin(); itr != YamanoteLine.end(); ++itr) {
+        std::cout << *itr << "\n";
+    }
 
-	std::function<void(int)> CheckTheAnswer = [](int num) {
-		int result = rand() % 2 + 1;
-
-		if (result == 0 && num == 0 ||
-			result == 1 && num == 1) {
-			printf("正解!\n");
-		}
-		else {
-			printf("不正解\n");
-		}
-	};
-
-	CheckTheAnswer(playerNum);
+ 
+	
 
 	return 0;
 }
