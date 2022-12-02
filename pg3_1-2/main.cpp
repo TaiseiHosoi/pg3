@@ -15,7 +15,7 @@ void create(CELL* currentCell, int val);
 void edit(CELL* currentCell, int val);
 void remove(CELL* currentCell);
 void index(CELL* endCell, int& scene);
-CELL* getInsertCellAddress(CELL* endCell, int iterator, int scene);
+CELL* getInsertCellAddress(CELL* endCell, int iterator, int scene, bool &isThrough);
 
 
 
@@ -23,6 +23,7 @@ int main() {
 
 	int iterator;	//イテレータ
 	int inputValue;	//入力用
+	bool isThrough_ = true;
 
 	//関数用
 	CELL* insertCell;
@@ -36,10 +37,9 @@ int main() {
 
 	int scene = 0;
 
-
-
 	while (true)
 	{
+		
 		if (scene == 0) {
 			printf("---------------------------\n");
 			printf("操作を入力してください\n");
@@ -47,8 +47,8 @@ int main() {
 			printf("2,要素の挿入\n");
 			printf("3,要素の編集\n");
 			printf("4,要素の削除\n");
-			printf("5,要素の並び替え\n");
 			scanf_s("%d", &scene);
+			isThrough_ = true;
 		}
 		else if (scene == 1) {
 			index(&head, scene);
@@ -56,27 +56,41 @@ int main() {
 		}
 		else if (scene == 2) {
 			printf("---------------------------\n");
-			printf("\n何番目のセルの後ろに挿入しますか？\n");
+			printf("\n要素を追加する場所を指定してください。\n");
 			scanf_s("%d", &iterator);
 
 			printf("\n挿入する値を入力してください\n");
 			scanf_s("%d", &inputValue);
 
-			insertCell = getInsertCellAddress(&head, iterator,scene);
+			insertCell = getInsertCellAddress(&head, iterator, scene, isThrough_);
 			create(insertCell, inputValue);
+
+			if (isThrough_ == true) {
+				printf("\n要素%dが%d番目に挿入されました\n", inputValue, iterator);
+			}
+			else {
+				printf("\n要素%dが最後尾に挿入されました\n", inputValue);
+			}
 
 			scene = 0;
 		}
 		else if (scene == 3) {
 			printf("---------------------------\n");
-			printf("\n何番目のセルを編集しますか？\n");
+			printf("\n編集したい要素の番号を指定してください\n");
 			scanf_s("%d", &iterator);
 
-			printf("\n挿入する値を入力してください\n");
+			printf("\n%d番目の要素を変更する値を入力してください\n", iterator);
 			scanf_s("%d", &inputValue);
 
-			editCell = getInsertCellAddress(&head, iterator,scene);
-			edit(editCell, inputValue);
+			editCell = getInsertCellAddress(&head, iterator, scene, isThrough_);
+
+			if (isThrough_ == true) {
+				edit(editCell, inputValue);
+				printf("\n%d番目の要素が%dに変更されました\n", iterator, inputValue);
+			}
+			else {
+				printf("\n%d番目の要素が見つかりませんでした\n" ,iterator);
+			}
 
 			scene = 0;
 
@@ -85,12 +99,19 @@ int main() {
 			printf("\n何番目のセルを削除しますか？\n");
 			scanf_s("%d", &iterator);
 
-			removeCell = getInsertCellAddress(&head, iterator,scene);
-			remove(removeCell);
+			removeCell = getInsertCellAddress(&head, iterator, scene, isThrough_);
+			if (isThrough_ == true) {
+				printf("\n%d番目の要素'%d'を削除しました\n", iterator,removeCell->val);
+				remove(removeCell);
+			}
+			else {
+				printf("\n%d番目の要素が見つかりませんでした\n", iterator);
+			}
 
 			scene = 0;
 
 		}
+		
 	}
 
 
@@ -132,7 +153,7 @@ void remove(CELL* currentCell)
 
 void index(CELL* endCell, int& scene)
 {
-	
+
 	int sceneSelect = 0;
 
 	while (true)
@@ -160,28 +181,35 @@ void index(CELL* endCell, int& scene)
 		}
 		else if (sceneSelect == 2) {
 			int numSelect;
-			printf("表示したい順番を入力してください\n");
+			printf("表示したい要素の順番を指定してください\n");
 			scanf_s("%d", &numSelect);
 
 			printf("---------------------------\n");
 			bool whether = true;
-			for (int i = 1; i < numSelect-1; i++) 
+			CELL* printCell;
+			printCell = endCell;
+			for (int i = 0; i < numSelect; i++)
 			{
-				if (endCell->next) {
-					endCell = endCell->next;
+				if (printCell->next) {
+					printCell = printCell->next;
 				}
 				else {
-					
+					if (whether == true) {
+						whether = false;
+					}
 					break;
 				}
-				
-				
+
+
 			}
 			if (whether == true) {
 				printf("%d :", numSelect);
-				printf("%d\n", endCell->val);
+				printf("%d\n", printCell->val);
 			}
-			
+			else {
+				printf("%d番目の要素が見つかりませんでした\n", numSelect);
+			}
+
 			printf("---------------------------\n");
 		}
 		else if (sceneSelect == 9) {
@@ -204,18 +232,26 @@ void index(CELL* endCell, int& scene)
 
 
 
-CELL* getInsertCellAddress(CELL* endCell, int iterator,int scene)
+CELL* getInsertCellAddress(CELL* endCell, int iterator, int scene, bool &isThrough)
 {
+	
+
 	for (int i = 0; i < iterator; i++) {
+
 		if (endCell->next) {
 			endCell = endCell->next;
+			isThrough = true;
 		}
 		else {
-			if (scene == 3 || scene == 4) {
-				printf("探している要素が見つかりません\n");
+			isThrough = false;
+			if (i + 1 == iterator) {
+				isThrough = true;
 			}
 			break;
 		}
+
+		
 	}
+
 	return endCell;
 }
