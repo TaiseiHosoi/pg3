@@ -43,10 +43,10 @@ int main() {
 
 	std::function<void(PFunc, int, int)> SetTimeOut = [](PFunc p, int sec, int num) {
 
-		p(&num);
-
 		printf("%dïbí‚é~\n", sec);
 		Sleep(sec * 1000);
+
+		p(&num);
 	};
 
 	SetTimeOut(ScanNum, sec, playerNum);
