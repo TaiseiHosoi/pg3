@@ -37,25 +37,31 @@ int main() {
 
 	srand(time(nullptr));
 
-
+	int answerNum = 0;
 	int playerNum = 0;
 	int sec = 3;
 
-	std::function<void(PFunc, int, int)> SetTimeOut = [](PFunc p, int sec, int num) {
+	std::function<int()> NumLottery = [&answerNum]()
+	{
+		answerNum = rand() % 2 + 1;
+		return answerNum;
+	};
+
+	std::function<void(PFunc p,std::function<void()>, int, int)> SetTimeOut = [=](PFunc p,std::function<void()> fx, int sec, int num) {
+
+		p(&num);
+		fx();
 
 		printf("%dïbí‚é~\n", sec);
 		Sleep(sec * 1000);
-
-		p(&num);
+		
 	};
 
-	SetTimeOut(ScanNum, sec, playerNum);
 
-	std::function<void(int)> CheckTheAnswer = [](int num) {
-		int result = rand() % 2 + 1;
+	std::function<void(int,int)> CheckTheAnswer = [](int aNum,int  pNum) {
 
-		if (result == 0 && num == 0 ||
-			result == 1 && num == 1) {
+		if (aNum == 0 && pNum == 0 ||
+			aNum == 1 && pNum == 1) {
 			printf("ê≥â!\n");
 		}
 		else {
@@ -63,7 +69,8 @@ int main() {
 		}
 	};
 
-	CheckTheAnswer(playerNum);
+	SetTimeOut(ScanNum,NumLottery, sec, playerNum);
+	CheckTheAnswer(answerNum,playerNum);
 
 	return 0;
 }
