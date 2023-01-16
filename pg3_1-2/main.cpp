@@ -1,76 +1,97 @@
-#include <functional>
-#include <stdio.h>
-#include <Windows.h>
-#include <time.h>
-#include <stdlib.h>
+#include "DxLib.h"
+#include "time.h"
+#include"math.h"
+#include"stdlib.h"
 
-typedef void (*PFunc)(int*);
+// ウィンドウのタイトルに表示する文字列
+const char TITLE[] = "LE2B_22_ホソイタイセイ";
 
-enum OddEven
-{
-	Zero,
-	Odd,
-	Even,
-};
+// ウィンドウ横幅
+const int WIN_WIDTH = 600;
 
-
-void ScanNum(int* num) {
-
-	printf("値を入力してください。\n");
-
-	scanf_s("%d", num);
-
-	if (*num % 2 == 0) {
-		*num = Even;
-	}
-	else if (*num % 2 == 1) {
-		*num = Odd;
-	}
-	else {
-		printf("error\n");
-	}
-}
+// ウィンドウ縦幅
+const int WIN_HEIGHT = 400;
 
 
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
+	_In_ int nCmdShow) {
+	// ウィンドウモードに設定
+	ChangeWindowMode(TRUE);
 
-int main() {
+	// ウィンドウサイズを手動では変更させず、
+	// かつウィンドウサイズに合わせて拡大できないようにする
+	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
 
-	srand(time(nullptr));
+	// タイトルを変更
+	SetMainWindowText(TITLE);
 
-	int answerNum = 0;
-	int playerNum = 0;
-	int sec = 3;
+	// 画面サイズの最大サイズ、カラービット数を設定(モニターの解像度に合わせる)
+	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 
-	std::function<int()> NumLottery = [&answerNum]()
-	{
-		answerNum = rand() % 2 + 1;
-		return answerNum;
-	};
+	// 画面サイズを設定(解像度との比率で設定)
+	SetWindowSizeExtendRate(1.0);
 
-	std::function<void(PFunc p,std::function<void()>, int, int)> SetTimeOut = [=](PFunc p,std::function<void()> fx, int sec, int num) {
+	// 画面の背景色を設定する
+	SetBackgroundColor(0x00, 0x00, 0x00);
 
-		p(&num);
-		fx();
+	// DXlibの初期化
+	if (DxLib_Init() == -1) { return -1; }
 
-		printf("%d秒停止\n", sec);
-		Sleep(sec * 1000);
+	// (ダブルバッファ)描画先グラフィック領域は裏面を指定
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	// 画像などのリソースデータの変数宣言と読み込み
+
+
+	// ゲームループで使う変数の宣言
+	
+
+	// 最新のキーボード情報用
+	char keys[256] = { 0 };
+
+	// 1ループ(フレーム)前のキーボード情報
+	char oldkeys[256] = { 0 };
+
+	// ゲームループ
+	while (true) {
+		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
+		for (int i = 0; i < 256; ++i) {
+			oldkeys[i] = keys[i];
+		}
+		// 最新のキーボード情報を取得
+		GetHitKeyStateAll(keys);
+
+		// 画面クリア
+		ClearDrawScreen();
+		//---------  ここからプログラムを記述  ----------//
+
+
+
+		// 更新処理
 		
-	};
+		// 描画処理
+		
 
+		//---------  ここまでにプログラムを記述  ---------//
+		// (ダブルバッファ)裏面
+		ScreenFlip();
 
-	std::function<void(int,int)> CheckTheAnswer = [](int aNum,int  pNum) {
+		// 20ミリ秒待機(疑似60FPS)
+		WaitTimer(20);
 
-		if (aNum == 0 && pNum == 0 ||
-			aNum == 1 && pNum == 1) {
-			printf("正解!\n");
+		// Windowsシステムからくる情報を処理する
+		if (ProcessMessage() == -1) {
+			break;
 		}
-		else {
-			printf("不正解\n");
+
+		// ESCキーが押されたらループから抜ける
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) {
+			break;
 		}
-	};
+	}
+	// Dxライブラリ終了処理
+	DxLib_End();
 
-	SetTimeOut(ScanNum,NumLottery, sec, playerNum);
-	CheckTheAnswer(answerNum,playerNum);
-
+	// 正常終了
 	return 0;
 }
