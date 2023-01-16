@@ -41,15 +41,17 @@ int main() {
 	int playerNum = 0;
 	int sec = 3;
 
+	ScanNum(&playerNum);
+
 	std::function<int()> NumLottery = [&answerNum]()
 	{
 		answerNum = rand() % 2 + 1;
 		return answerNum;
 	};
 
-	std::function<void(PFunc p,std::function<void()>, int, int)> SetTimeOut = [=](PFunc p,std::function<void()> fx, int sec, int num) {
+	std::function<void(std::function<void()>, int)> SetTimeOut = [=](std::function<void()> fx, int sec) {
 
-		p(&num);
+		
 		fx();
 
 		printf("%dïbí‚é~\n", sec);
@@ -69,7 +71,7 @@ int main() {
 		}
 	};
 
-	SetTimeOut(ScanNum,NumLottery, sec, playerNum);
+	SetTimeOut(NumLottery, sec);
 	CheckTheAnswer(answerNum,playerNum);
 
 	return 0;
