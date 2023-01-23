@@ -1,6 +1,10 @@
 #include "SceneManager.h"
 #include <stdio.h>
 
+SceneManager::SceneManager()
+{
+}
+
 SceneManager::~SceneManager()
 {
 }

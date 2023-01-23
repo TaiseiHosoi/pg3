@@ -7,6 +7,7 @@ class SceneManager :public Singleton<SceneManager>
 private:
 	// コンストラクタ,デストラクタ
 	SceneManager();
+
 	~SceneManager();
 public:
 	
