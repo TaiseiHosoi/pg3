@@ -1,14 +1,25 @@
 #pragma once
-#include"Singleton.h"
 
-class SceneManager :public Singleton<SceneManager>
+
+class SceneManager final
 {
-	friend Singleton<SceneManager>;
+
+	
 private:
 	// コンストラクタ,デストラクタ
 	SceneManager();
 
 	~SceneManager();
+public:
+	// インスタンス
+	static SceneManager* GetInstance();
+
+public:
+	// コピーコンストラクタを無効にする
+	SceneManager(const SceneManager&) = delete;
+	// 代入演算子を無効にする
+	SceneManager& operator=(const SceneManager&) = delete;
+
 public:
 	
 	void ChangeScene(int sceneNum);

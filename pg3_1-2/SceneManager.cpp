@@ -9,6 +9,11 @@ SceneManager::~SceneManager()
 {
 }
 
+SceneManager* SceneManager::GetInstance()
+{
+	return nullptr;
+}
+
 void SceneManager::ChangeScene(int sceneNum)
 {
 	switch (sceneNum)

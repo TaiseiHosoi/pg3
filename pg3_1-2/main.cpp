@@ -5,14 +5,13 @@
 #include <random>
 #include"windows.h"
 
-#include"Singleton.h"
 #include"SceneManager.h"
 
 
 int main()
 {
 
-    SceneManager& sceneManager_ = SceneManager::GetInstance();
+    SceneManager* sceneManager_ = SceneManager::GetInstance();
    
 
     enum scene {
@@ -32,7 +31,7 @@ int main()
             sceneNum_++;
         }
 
-        sceneManager_.ChangeScene(sceneNum_);
+        sceneManager_->ChangeScene(sceneNum_);
 
         Sleep(3000); // 3•bƒXƒŠ[ƒv
     }
