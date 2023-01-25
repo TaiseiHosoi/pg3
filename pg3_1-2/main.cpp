@@ -1,48 +1,24 @@
-#include <functional>
+
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <random>
-#include"windows.h"
+//#include"windows.h"
 
-#include"Enemy.h"
+#include"Circle.h"
+#include"Rectangle.h"
+#include"IShape.h"
 
-bool Enemy::isAlive;
+
 
 int main()
 {
-    
-    Enemy* enemy1 = new Enemy;
-    Enemy* enemy2 = new Enemy;
-    Enemy* enemy3 = new Enemy;
+    Circle *circle_ = new Circle;
+    Rectangle *rectangle_ = new Rectangle;
 
-    enemy1->Initialize();
-    enemy2->Initialize();
-    enemy3->Initialize();
+    circle_->Size();
+    rectangle_->Size();
 
-    // 終焉のカウントダウン
-    int finalCountdown = 3;
+    circle_->Draw();
+    rectangle_->Draw();
 
-    
-
-    //ゲームシーン
-    while (true) {
-        
-        finalCountdown--;
-
-        if (finalCountdown <= 0) {
-            Enemy::isAlive = false;
-        }
-
-        enemy1->Update();
-        enemy2->Update();
-        enemy3->Update();
-
-        enemy1->Draw();
-        enemy2->Draw();
-        enemy3->Draw();
-        Sleep(1000); // 1秒スリープ
-    }
 
 
     system("pause");
