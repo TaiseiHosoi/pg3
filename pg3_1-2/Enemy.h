@@ -8,6 +8,6 @@ public:
 	
 public:
 
-	static bool isDead;
+	static bool isAlive;
 };
 

@@ -7,7 +7,7 @@
 
 #include"Enemy.h"
 
-bool Enemy::isDead;
+bool Enemy::isAlive;
 
 int main()
 {
@@ -31,7 +31,7 @@ int main()
         finalCountdown--;
 
         if (finalCountdown <= 0) {
-            Enemy::isDead = false;
+            Enemy::isAlive = false;
         }
 
         enemy1->Draw();

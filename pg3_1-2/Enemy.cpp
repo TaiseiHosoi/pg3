@@ -4,7 +4,7 @@
 
 void Enemy::Initialize()
 {
-	isDead = true;
+	isAlive = true;
 }
 
 void Enemy::Update()
@@ -14,10 +14,10 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
-	if (isDead == true) {
+	if (isAlive == true) {
 		printf("¶‚«‚Ä‚é\n");
 	}
-	else if (isDead == false) {
+	else if (isAlive == false) {
 		printf("€‚ñ‚Å‚é\n");
 	}
 	else
