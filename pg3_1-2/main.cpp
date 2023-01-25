@@ -5,35 +5,39 @@
 #include <random>
 #include"windows.h"
 
-#include"SceneManager.h"
+#include"Enemy.h"
 
+bool Enemy::isDead;
 
 int main()
 {
+    
+    Enemy* enemy1 = new Enemy;
+    Enemy* enemy2 = new Enemy;
+    Enemy* enemy3 = new Enemy;
 
-    SceneManager* sceneManager_ = SceneManager::GetInstance();
-   
+    enemy1->Initialize();
+    enemy2->Initialize();
+    enemy3->Initialize();
 
-    enum scene {
-        Title,  // 0
-        NewGame,    // 1
-        GamePlay,   // 2
-        GameClear   // 3
-    };
+    // 終焉のカウントダウン
+    int finalCountdown = 3;
 
-    int sceneNum_ = Title;
 
+
+    //ゲームシーン
     while (true) {
-        if (sceneNum_ > GameClear) {
-            sceneNum_ = Title;
-        }
-        else {
-            sceneNum_++;
+        
+        finalCountdown--;
+
+        if (finalCountdown <= 0) {
+            Enemy::isDead = false;
         }
 
-        sceneManager_->ChangeScene(sceneNum_);
-
-        Sleep(3000); // 3秒スリープ
+        enemy1->Draw();
+        enemy2->Draw();
+        enemy3->Draw();
+        Sleep(1000); // 1秒スリープ
     }
 
 
