@@ -23,7 +23,7 @@ int main()
     // 終焉のカウントダウン
     int finalCountdown = 3;
 
-
+    
 
     //ゲームシーン
     while (true) {
@@ -33,6 +33,10 @@ int main()
         if (finalCountdown <= 0) {
             Enemy::isAlive = false;
         }
+
+        enemy1->Update();
+        enemy2->Update();
+        enemy3->Update();
 
         enemy1->Draw();
         enemy2->Draw();
